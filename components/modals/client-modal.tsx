@@ -31,7 +31,11 @@ const ClientModal = () => {
     },
   });
 
+  const { control } = form;
+
   const onSubmit = (values: z.infer<typeof ClientFormSchema>) => {
+    setLoading(true);
+
     const { city, street, number, commune } = values;
 
     const newClient: Client = {
@@ -48,6 +52,8 @@ const ClientModal = () => {
 
     form.reset();
     clientModal.onClose();
+
+    setLoading(false);
   };
 
   if (!clientModal.isOpen) return null;
@@ -63,7 +69,7 @@ const ClientModal = () => {
           <div className="flex flex-col gap-y-4 mb-6">
             {/* RUT */}
             <FormInput
-              form={form}
+              control={control}
               name="RUT"
               label="RUT"
               smallLabel
@@ -73,7 +79,7 @@ const ClientModal = () => {
 
             {/* name */}
             <FormInput
-              form={form}
+              control={control}
               name="name"
               label="Name"
               smallLabel
@@ -83,7 +89,7 @@ const ClientModal = () => {
 
             {/* lastName */}
             <FormInput
-              form={form}
+              control={control}
               name="lastName"
               label="Last Name"
               smallLabel
@@ -93,7 +99,7 @@ const ClientModal = () => {
 
             {/* telephone */}
             <FormInput
-              form={form}
+              control={control}
               name="telephone"
               label="Telephone"
               smallLabel
@@ -103,7 +109,7 @@ const ClientModal = () => {
 
             {/* city */}
             <FormInput
-              form={form}
+              control={control}
               name="city"
               label="City"
               smallLabel
@@ -113,7 +119,7 @@ const ClientModal = () => {
 
             {/* telephone */}
             <FormInput
-              form={form}
+              control={control}
               name="street"
               label="Street"
               smallLabel
@@ -123,7 +129,7 @@ const ClientModal = () => {
 
             {/* number */}
             <FormInput
-              form={form}
+              control={control}
               name="number"
               label="Number"
               smallLabel
@@ -134,7 +140,7 @@ const ClientModal = () => {
 
             {/* commune */}
             <FormInput
-              form={form}
+              control={control}
               name="commune"
               label="Commune"
               smallLabel
@@ -143,10 +149,7 @@ const ClientModal = () => {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="bg-sky-500 hover:bg-sky-600 focus:bg-sky-600 w-full"
-          >
+          <Button type="submit" className="bg-sky-500 hover:bg-sky-600 w-full">
             Save
           </Button>
         </form>

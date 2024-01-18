@@ -23,7 +23,7 @@ import {
 interface FormComboboxProps {
   form: UseFormReturn<any, any, undefined>;
   name: string;
-  label: string;
+  label?: string;
   required?: boolean;
   placeholder?: string;
   innerPlaceholder?: string;
@@ -32,6 +32,7 @@ interface FormComboboxProps {
   itemKey: string;
   itemValue: string;
   disabled?: boolean;
+  onTrigger?: () => void;
 }
 
 const FormCombobox = ({
@@ -46,6 +47,7 @@ const FormCombobox = ({
   itemKey,
   itemValue,
   disabled,
+  onTrigger,
 }: FormComboboxProps) => {
   const [showItems, setShowItems] = useState(false);
   const triggerRef = useRef<any>(null);
@@ -80,7 +82,7 @@ const FormCombobox = ({
       name={name}
       render={({ field }) => (
         <FormItem className="flex flex-col w-full">
-          <FormLabelCustom label={label} required={required} />
+          {label && <FormLabelCustom label={label} required={required} />}
           <Popover>
             <div className="relative w-full">
               <PopoverTrigger asChild ref={triggerRef} disabled={disabled}>
@@ -95,7 +97,7 @@ const FormCombobox = ({
                     )}
                   >
                     {field.value
-                      ? items.find((item) => item[itemValue] === field.value)[
+                      ? items.find((item) => item[itemKey] === field.value)[
                           itemValue
                         ]
                       : placeholder}
@@ -115,15 +117,16 @@ const FormCombobox = ({
                       {items.map((item) => (
                         <CommandItem
                           key={item[itemKey]}
-                          value={item[itemValue]}
+                          value={item[itemKey]}
                           onSelect={() => {
                             form.setValue(name, item[itemKey]);
+                            onTrigger && onTrigger();
                           }}
                         >
                           <Check
                             className={cn(
                               "mr-2 h-4 w-4",
-                              item[itemValue] === field.value
+                              item[itemKey] === field.value
                                 ? "opacity-100"
                                 : "opacity-0"
                             )}

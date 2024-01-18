@@ -59,19 +59,15 @@ export const clients: Client[] = [
 
 export const branchOffices: BranchOffice[] = [
   {
-    country: "Colombia",
-    currency: "COP",
-  },
-  {
     country: "Argentina",
     currency: "ARS",
   },
   {
-    country: "Mexico",
-    currency: "MXN",
+    country: "Bolivia",
+    currency: "BOB",
   },
   {
-    country: "Brazil",
+    country: "Brasil",
     currency: "BRL",
   },
   {
@@ -79,31 +75,89 @@ export const branchOffices: BranchOffice[] = [
     currency: "CLP",
   },
   {
-    country: "Peru",
-    currency: "PEN",
+    country: "Colombia",
+    currency: "COP",
+  },
+  {
+    country: "Costa Rica",
+    currency: "CRC",
+  },
+  {
+    country: "Cuba",
+    currency: "CUP",
+  },
+  {
+    country: "República Dominicana",
+    currency: "DOP",
   },
   {
     country: "Ecuador",
     currency: "USD",
   },
   {
-    country: "Venezuela",
-    currency: "VES",
+    country: "El Salvador",
+    currency: "USD",
   },
   {
-    country: "Uruguay",
-    currency: "UYU",
+    country: "Guyana",
+    currency: "GYD",
+  },
+  {
+    country: "Guatemala",
+    currency: "GTQ",
+  },
+  {
+    country: "Honduras",
+    currency: "HNL",
+  },
+  {
+    country: "México",
+    currency: "MXN",
+  },
+  {
+    country: "Nicaragua",
+    currency: "NIO",
+  },
+  {
+    country: "Panamá",
+    currency: "PAB",
   },
   {
     country: "Paraguay",
     currency: "PYG",
   },
   {
-    country: "Bolivia",
-    currency: "BOB",
+    country: "Perú",
+    currency: "PEN",
   },
   {
-    country: "Guatemala",
-    currency: "GTQ",
+    country: "Puerto Rico",
+    currency: "USD",
+  },
+  {
+    country: "Uruguay",
+    currency: "UYU",
+  },
+  {
+    country: "Venezuela",
+    currency: "VES",
+  },
+];
+
+export type Product = {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  branchOffice?: string;
+};
+
+export const products: Product[] = [
+  {
+    id: "1",
+    name: "PC",
+    price: 3000000,
+    stock: 2,
+    branchOffice: "Colombia",
   },
 ];

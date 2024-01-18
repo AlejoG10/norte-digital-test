@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form";
+import { Control } from "react-hook-form";
 
 import {
   FormControl,
@@ -10,19 +10,20 @@ import { Input } from "@/components/ui/input";
 import FormLabelCustom from "./form-label-custom";
 
 interface FormFieldProps {
-  form: UseFormReturn<any, any, undefined>;
+  control: Control<any, any>;
   name: string;
-  value?: string;
-  label: string;
+  value?: string | number;
+  label?: string;
   smallLabel?: boolean;
   type?: string;
   required?: boolean;
   placeholder?: string;
   disabled?: boolean;
+  onTrigger?: () => void;
 }
 
 const FormInput = ({
-  form,
+  control,
   name,
   value,
   label,
@@ -31,18 +32,21 @@ const FormInput = ({
   required,
   placeholder,
   disabled,
+  onTrigger,
 }: FormFieldProps) => {
   return (
     <FormField
-      control={form.control}
+      control={control}
       name={name}
       render={({ field }) => (
         <FormItem>
-          <FormLabelCustom
-            label={label}
-            className={`${smallLabel && "text-sm"}`}
-            required={required}
-          />
+          {label && (
+            <FormLabelCustom
+              label={label}
+              className={`${smallLabel && "text-sm"}`}
+              required={required}
+            />
+          )}
           <FormControl>
             <Input
               placeholder={placeholder}
@@ -50,6 +54,7 @@ const FormInput = ({
               {...field}
               value={value}
               disabled={disabled}
+              onChangeCapture={onTrigger}
             />
           </FormControl>
           <FormMessage />
