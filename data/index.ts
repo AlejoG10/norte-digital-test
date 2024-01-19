@@ -46,7 +46,7 @@ export type SaleDetail = {
 
 export type Sale = {
   id: string;
-  fecha: Date;
+  date: Date;
   sellerRUT: string;
   clientRUT: string;
   branchOffice: string;
@@ -20133,21 +20133,43 @@ export const products: Product[] = [
   },
 ];
 
-const b1 = branchOffices[0].country;
-const p1 = products.find((p) => p.branchOffice === branchOffices[0].country)!;
+const b0 = branchOffices[0].country;
+const p0 = products.find((p) => p.branchOffice === branchOffices[0].country)!;
 
-const b2 = branchOffices[1].country;
-const p2 = products.find((p) => p.branchOffice === branchOffices[1].country)!;
+const b1 = branchOffices[1].country;
+const p1 = products.find((p) => p.branchOffice === branchOffices[1].country)!;
 
-const b3 = branchOffices[2].country;
-const p3 = products.find((p) => p.branchOffice === branchOffices[2].country)!;
+const b2 = branchOffices[2].country;
+const p2 = products.find((p) => p.branchOffice === branchOffices[2].country)!;
+
+const b3 = branchOffices[3].country;
+const p3 = products.find((p) => p.branchOffice === branchOffices[3].country)!;
+
+const b4 = branchOffices[4].country;
+const p4 = products.find((p) => p.branchOffice === branchOffices[4].country)!;
 
 export const sales: Sale[] = [
   {
     id: genId(),
-    fecha: new Date(),
+    date: new Date(),
     sellerRUT: genId(),
     clientRUT: clients[0].RUT,
+    branchOffice: b0,
+    total: p0.price,
+    details: [
+      {
+        productId: p0.id,
+        price: p0.price,
+        quantity: 1,
+        subtotal: p0.price,
+      },
+    ],
+  },
+  {
+    id: genId(),
+    date: new Date(),
+    sellerRUT: genId(),
+    clientRUT: clients[1].RUT,
     branchOffice: b1,
     total: p1.price,
     details: [
@@ -20161,9 +20183,9 @@ export const sales: Sale[] = [
   },
   {
     id: genId(),
-    fecha: new Date(),
+    date: new Date(),
     sellerRUT: genId(),
-    clientRUT: clients[1].RUT,
+    clientRUT: clients[2].RUT,
     branchOffice: b2,
     total: p2.price,
     details: [
@@ -20177,9 +20199,9 @@ export const sales: Sale[] = [
   },
   {
     id: genId(),
-    fecha: new Date(),
+    date: new Date(),
     sellerRUT: genId(),
-    clientRUT: clients[1].RUT,
+    clientRUT: clients[3].RUT,
     branchOffice: b3,
     total: p3.price,
     details: [
@@ -20191,4 +20213,20 @@ export const sales: Sale[] = [
       },
     ],
   },
-];
+  {
+    id: genId(),
+    date: new Date(),
+    sellerRUT: genId(),
+    clientRUT: clients[4].RUT,
+    branchOffice: b4,
+    total: p4.price,
+    details: [
+      {
+        productId: p4.id,
+        price: p4.price,
+        quantity: 1,
+        subtotal: p4.price,
+      },
+    ],
+  },
+].reverse();

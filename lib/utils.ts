@@ -13,3 +13,8 @@ export function genId() {
 export function genRand(from: number, to: number) {
   return Math.floor(Math.random() * (to - from + 1) + from);
 }
+
+export const valor = new Intl.NumberFormat("co-CO", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});

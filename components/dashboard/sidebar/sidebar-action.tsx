@@ -1,5 +1,4 @@
 import { LucideIcon } from "lucide-react";
-import React from "react";
 
 interface SidebarActionProps {
   icon: LucideIcon;
@@ -8,8 +7,11 @@ interface SidebarActionProps {
 
 const SidebarAction = ({ icon: Icon, onClick }: SidebarActionProps) => {
   return (
-    <button className="duration-200 hover:scale-110" onClick={onClick}>
-      <Icon className="text-white h-6 w-6" />
+    <button
+      className="hover:bg-sky-600 rounded-xl p-3 duration-200 hover:scale-110"
+      onClick={onClick}
+    >
+      <Icon strokeWidth={2} className="text-white h-5 w-5" />
     </button>
   );
 };

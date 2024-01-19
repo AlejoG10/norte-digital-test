@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
-import { DollarSign, Home, LogOut, MapPin, Sun, User } from "lucide-react";
+import toast from "react-hot-toast";
+import { DollarSign, Home, LogOut, MapPin, User } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import SidebarLink from "./sidebar-link";
@@ -10,7 +10,6 @@ import SidebarAction from "./sidebar-action";
 
 const Sidebar = () => {
   const { onLogout } = useAuth();
-  const { theme, setTheme } = useTheme();
   const pathname = usePathname();
 
   const sidebarLinks = [
@@ -25,40 +24,39 @@ const Sidebar = () => {
       active: pathname === "/dashboard/sales",
     },
     {
-      icon: MapPin,
-      link: "/dashboard/branch-offices",
-      active: pathname === "/dashboard/branch-offices",
-    },
-    {
       icon: User,
       link: "/dashboard/users",
       active: pathname === "/dashboard/users",
+    },
+    {
+      icon: MapPin,
+      link: "/dashboard/branch-offices",
+      active: pathname === "/dashboard/branch-offices",
     },
   ];
 
   const sidebarActions = [
     {
-      icon: Sun,
-      onClick: () => (theme === "light" ? setTheme("dark") : setTheme("light")),
-    },
-    {
       icon: LogOut,
-      onClick: onLogout,
+      onClick: () => {
+        onLogout();
+        toast.success("Logged out!");
+      },
     },
   ];
 
   return (
-    <div className="bg-sky-500 rounded-lg shadow-xl p-5 w-[75px]">
+    <div className="hidden md:inline bg-sky-500 rounded-lg shadow-xl p-5 w-[75px]">
       <div className="flex flex-col justify-between h-full">
         {/* links */}
-        <div className="flex flex-col items-center gap-y-8">
+        <div className="flex flex-col items-center gap-y-4">
           {sidebarLinks.map((link) => (
             <SidebarLink key={link.link} {...link} />
           ))}
         </div>
 
         {/* actions */}
-        <div className="flex flex-col items-center gap-y-8">
+        <div className="flex flex-col items-center gap-y-4">
           {sidebarActions.map((action, i) => (
             <SidebarAction key={i} {...action} />
           ))}

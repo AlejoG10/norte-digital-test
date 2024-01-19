@@ -3,7 +3,7 @@ import SaleForm from "@/components/dashboard/form/sale-form";
 
 const NewSalePage = () => {
   return (
-    <div className="flex flex-col gap-y-10">
+    <div className="flex flex-col gap-y-8">
       <Heading title="New Sale" />
       <SaleForm />
     </div>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import ToasterProvider from "@/components/providers/toaster-provider";
 import ClientModalProvider from "@/components/providers/client-modal-provider";
 
@@ -21,15 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <ToasterProvider />
-          <ClientModalProvider />
-          {children}
-        </ThemeProvider>
+        <ToasterProvider />
+        <ClientModalProvider />
+        {children}
       </body>
     </html>
   );

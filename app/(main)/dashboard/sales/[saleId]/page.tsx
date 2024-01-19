@@ -1,13 +1,12 @@
 import Heading from "@/components/dashboard/headings/heading";
 import SalesTable from "@/components/dashboard/sales/sales-table";
 
-const SalesPage = () => {
+const SaleDetailPage = () => {
   return (
-    <div className="flex flex-col gap-y-5">
-      <Heading title="Sales" />
-      <SalesTable />
+    <div className="flex flex-col gap-y-8">
+      <Heading title="Sale Detail" />
     </div>
   );
 };
 
-export default SalesPage;
+export default SaleDetailPage;

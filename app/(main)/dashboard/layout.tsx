@@ -13,7 +13,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="h-screen w-screen p-4 md:p-6">
-      <div className="flex gap-x-12 h-full w-full">
+      <div className="flex gap-x-10 h-full w-full">
         <Sidebar />
 
         {/* actual dashboard page */}

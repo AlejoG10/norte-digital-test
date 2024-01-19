@@ -188,12 +188,12 @@ const SaleForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-y-8">
+        <div className="flex flex-col gap-y-6">
           {/* document section */}
-          <section className="flex flex-col gap-y-4">
+          <section className="bg-slate-50 flex flex-col gap-y-5 border rounded-md p-4">
             <SubHeading title="Document" />
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-6">
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-y-3 sm:gap-x-6">
               {/* client */}
               <div className="flex col-span-5 gap-x-3">
                 <FormCombobox
@@ -223,7 +223,7 @@ const SaleForm = () => {
               </div>
 
               {/* branch office */}
-              <div className="col-span-4">
+              <div className="col-span-5">
                 <FormCombobox
                   form={form}
                   name="branchOffice"
@@ -240,7 +240,7 @@ const SaleForm = () => {
               </div>
 
               {/* currency */}
-              <div className="col-span-3">
+              <div className="col-span-2">
                 <FormInput
                   control={control}
                   name="currency"
@@ -252,125 +252,132 @@ const SaleForm = () => {
             </div>
           </section>
 
-          {/* details section */}
-          <div className="flex flex-col gap-y-4">
-            <SubHeading title="Details" />
+          {/* details section wrapper */}
+          <section className="bg-slate-50 border rounded-md p-4 overflow-x-scroll">
+            <div className="min-w-[900px]">
+              {/* details section */}
+              <div className="flex flex-col gap-y-5">
+                <SubHeading title="Details" />
 
-            {details.map((detail, i) => (
-              <div key={detail.id} className="grid grid-cols-12 gap-x-6">
-                {/* product name */}
-                <div className="col-span-5">
-                  <FormCombobox
-                    form={form}
-                    name={`details[${i}].name`}
-                    label={i === 0 ? "Name" : undefined}
-                    required
-                    placeholder="Select a product"
-                    innerPlaceholder="Search a product"
-                    emptyText="No products found."
-                    items={getProductsFromBranchOffice()}
-                    itemKey="id"
-                    itemValue="name"
-                    disabled={!branchOfficeWatch || loading}
-                    onTrigger={onTrigger}
-                  />
+                {details.map((detail, i) => (
+                  <div key={detail.id} className="grid grid-cols-12 gap-x-6">
+                    {/* product name */}
+                    <div className="col-span-5">
+                      <FormCombobox
+                        form={form}
+                        name={`details[${i}].name`}
+                        label={i === 0 ? "Name" : undefined}
+                        required
+                        placeholder="Select a product"
+                        innerPlaceholder="Search a product"
+                        emptyText="No products found."
+                        items={getProductsFromBranchOffice()}
+                        itemKey="id"
+                        itemValue="name"
+                        disabled={!branchOfficeWatch || loading}
+                        onTrigger={onTrigger}
+                      />
+                    </div>
+
+                    {/* product quantity */}
+                    <div className="col-span-2">
+                      <FormInput
+                        control={control}
+                        name={`details[${i}].quantity`}
+                        label={i === 0 ? "Quantity" : undefined}
+                        type="number"
+                        required
+                        disabled={!detailsWatch[i].name || loading}
+                        onTrigger={onTrigger}
+                      />
+                    </div>
+
+                    {/* product price */}
+                    <div className="col-span-2">
+                      <FormInput
+                        control={control}
+                        name={`details[${i}].price`}
+                        label={i === 0 ? appendCurrencyTo("Price") : undefined}
+                        type="number"
+                        setValue={setValue}
+                        value={getPrice(i)}
+                        disabled
+                      />
+                    </div>
+
+                    {/* subtotal */}
+                    <div className="col-span-2">
+                      <FormInput
+                        control={control}
+                        name={`details[${i}].subtotal`}
+                        label={
+                          i === 0 ? appendCurrencyTo("Subtotal") : undefined
+                        }
+                        setValue={setValue}
+                        value={getSubtotal(i)}
+                        disabled
+                      />
+                    </div>
+
+                    {/* remove button */}
+                    <div className="col-span-1 ml-auto">
+                      <Button
+                        size="icon"
+                        type="button"
+                        className={cn(
+                          "relative bg-sky-500 hover:bg-sky-600",
+                          i === 0 && "top-8"
+                        )}
+                        onClick={() => remove(i)}
+                        disabled={details.length === 1 || loading}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+
+                <Button
+                  className="bg-sky-500 hover:bg-sky-600 w-40"
+                  type="button"
+                  onClick={() => append(defaultDetail)}
+                >
+                  Add field
+                </Button>
+              </div>
+
+              <br />
+
+              {/* total */}
+              <div className="grid grid-cols-12 items-center gap-x-6">
+                <div className="col-start-8 col-span-2 ml-auto">
+                  <FormLabelCustom label={appendCurrencyTo("Total")} />
                 </div>
 
-                {/* product quantity */}
-                <div className="col-span-2">
+                <div className="col-start-10 col-span-2">
                   <FormInput
                     control={control}
-                    name={`details[${i}].quantity`}
-                    label={i === 0 ? "Quantity" : undefined}
-                    type="number"
-                    required
-                    disabled={!detailsWatch[i].name || loading}
-                    onTrigger={onTrigger}
-                  />
-                </div>
-
-                {/* product price */}
-                <div className="col-span-2">
-                  <FormInput
-                    control={control}
-                    name={`details[${i}].price`}
-                    label={i === 0 ? appendCurrencyTo("Price") : undefined}
-                    type="number"
+                    name="total"
+                    value={getTotal()}
                     setValue={setValue}
-                    value={getPrice(i)}
                     disabled
                   />
                 </div>
+              </div>
 
-                {/* subtotal */}
-                <div className="col-span-2">
-                  <FormInput
-                    control={control}
-                    name={`details[${i}].subtotal`}
-                    label={i === 0 ? appendCurrencyTo("Subtotal") : undefined}
-                    setValue={setValue}
-                    value={getSubtotal(i)}
-                    disabled
-                  />
-                </div>
-
-                {/* remove button */}
-                <div className="col-span-1 ml-auto">
+              {/* save button */}
+              <div className="grid grid-cols-12 gap-x-6 mt-6">
+                <div className="col-start-10 col-span-2">
                   <Button
-                    size="icon"
-                    type="button"
-                    className={cn(
-                      "relative bg-sky-500 hover:bg-sky-600",
-                      i === 0 && "top-8"
-                    )}
-                    onClick={() => remove(i)}
-                    disabled={details.length === 1 || loading}
+                    type="submit"
+                    className="bg-sky-500 hover:bg-sky-600 w-full"
                   >
-                    <X className="h-4 w-4" />
+                    Save
                   </Button>
                 </div>
               </div>
-            ))}
-
-            <Button
-              className="bg-sky-500 hover:bg-sky-600 w-40"
-              type="button"
-              onClick={() => append(defaultDetail)}
-            >
-              Add field
-            </Button>
-          </div>
-
-          <br />
-
-          {/* total */}
-          <div className="grid grid-cols-12 items-center gap-x-6">
-            <div className="col-start-8 col-span-2 ml-auto">
-              <FormLabelCustom label={appendCurrencyTo("Total")} />
             </div>
-
-            <div className="col-start-10 col-span-2">
-              <FormInput
-                control={control}
-                name="total"
-                value={getTotal()}
-                setValue={setValue}
-                disabled
-              />
-            </div>
-          </div>
-
-          {/* save button */}
-          <div className="grid grid-cols-12 gap-x-6">
-            <div className="col-start-10 col-span-2">
-              <Button
-                type="submit"
-                className="bg-sky-500 hover:bg-sky-600 w-full"
-              >
-                Save
-              </Button>
-            </div>
-          </div>
+          </section>
         </div>
       </form>
     </Form>

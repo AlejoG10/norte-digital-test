@@ -14,11 +14,11 @@ const SidebarLink = ({ icon: Icon, link, active }: SidebarLinkProps) => {
     <Link
       href={link}
       className={cn(
-        "duration-200 hover:scale-110",
-        active && "bg-sky-600 p-3 rounded-xl"
+        "rounded-xl p-3 duration-200 hover:scale-110",
+        active ? "bg-sky-600" : "hover:bg-sky-600"
       )}
     >
-      <Icon className={cn("text-white h-6 w-6")} />
+      <Icon strokeWidth={2} className="text-white h-5 w-5" />
     </Link>
   );
 };
