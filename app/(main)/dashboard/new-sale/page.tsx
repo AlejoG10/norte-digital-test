@@ -1,13 +1,13 @@
-import Header from "@/components/dashboard/header";
+import Heading from "@/components/dashboard/headings/heading";
 import SaleForm from "@/components/dashboard/form/sale-form";
 
-const Dashboard = () => {
+const NewSalePage = () => {
   return (
     <div className="flex flex-col gap-y-10">
-      <Header title="New Sale" imgUrl="" />
+      <Heading title="New Sale" />
       <SaleForm />
     </div>
   );
 };
 
-export default Dashboard;
+export default NewSalePage;

@@ -1,4 +1,4 @@
-import { Control } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
 
 import {
   FormControl,
@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FormLabelCustom from "./form-label-custom";
+import FormLabelCustom from "@/components/dashboard/form/form-label-custom";
 
 interface FormFieldProps {
   control: Control<any, any>;
@@ -19,6 +19,7 @@ interface FormFieldProps {
   required?: boolean;
   placeholder?: string;
   disabled?: boolean;
+  setValue?: UseFormSetValue<any>;
   onTrigger?: () => void;
 }
 
@@ -32,8 +33,13 @@ const FormInput = ({
   required,
   placeholder,
   disabled,
+  setValue,
   onTrigger,
 }: FormFieldProps) => {
+  if (value && setValue) {
+    setValue(name, value);
+  }
+
   return (
     <FormField
       control={control}

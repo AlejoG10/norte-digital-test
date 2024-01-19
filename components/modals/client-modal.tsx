@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import toast from "react-hot-toast";
 
 import { useClientModal } from "@/hooks/useClientModal";
 import { Client, clients } from "@/data";
@@ -23,23 +24,27 @@ const ClientModal = () => {
       RUT: "",
       name: "",
       lastName: "",
-      telephone: "",
+      telephone: 0,
       city: "",
       street: "",
-      number: undefined,
-      commune: "",
+      number: 0,
+      commune: 0,
     },
   });
 
-  const { control } = form;
+  const { control, handleSubmit } = form;
 
   const onSubmit = (values: z.infer<typeof ClientFormSchema>) => {
     setLoading(true);
 
-    const { city, street, number, commune } = values;
+    const { RUT, name, lastName, telephone, city, street, number, commune } =
+      values;
 
     const newClient: Client = {
-      ...values,
+      RUT,
+      name,
+      lastName,
+      telephone,
       address: {
         city,
         street,
@@ -48,24 +53,21 @@ const ClientModal = () => {
       },
     };
 
-    clients.push(newClient);
+    clients.splice(0, 0, newClient);
 
     form.reset();
     clientModal.onClose();
 
     setLoading(false);
+    toast.success("Client successfully created!");
   };
 
   if (!clientModal.isOpen) return null;
 
   return (
-    <Modal
-      title="Add a New Client"
-      dims="sm:w-9/12 md:w-8/12 lg:w-7/12 xl:w-1/2 sm:h-fit sm:max-h-[400px] overflow-y-scroll"
-      onClose={clientModal.onClose}
-    >
+    <Modal title="Add a New Client" onClose={clientModal.onClose}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-4 mb-6">
             {/* RUT */}
             <FormInput
@@ -103,6 +105,7 @@ const ClientModal = () => {
               name="telephone"
               label="Telephone"
               smallLabel
+              type="number"
               required
               disabled={loading}
             />
@@ -117,7 +120,7 @@ const ClientModal = () => {
               disabled={loading}
             />
 
-            {/* telephone */}
+            {/* street */}
             <FormInput
               control={control}
               name="street"
@@ -144,6 +147,7 @@ const ClientModal = () => {
               name="commune"
               label="Commune"
               smallLabel
+              type="number"
               required
               disabled={loading}
             />

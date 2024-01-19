@@ -5,19 +5,17 @@ import { boldFont } from "@/fonts";
 
 interface ModalProps {
   title: string;
-  dims: string;
   onClose: () => void;
   children: React.ReactNode;
 }
 
-const Modal = ({ title, dims, onClose, children }: ModalProps) => {
+const Modal = ({ title, onClose, children }: ModalProps) => {
   return (
     <div className="fixed bg-neutral-800/50 flex justify-center items-center h-screen w-screen z-50">
-      <div className={cn("bg-white rounded-md shadow-lg w-full h-full", dims)}>
+      <div className="flex flex-col w-screen sm:w-[500px] sm:max-h-[400px]">
         <div
           className={cn(
-            "fixed bg-white rounded-t-md flex justify-between items-center p-6 z-10 w-full h-fit",
-            dims
+            "bg-white rounded-t-md border-t shadow-lg flex justify-between items-center p-6 h-20"
           )}
         >
           <h1 className={cn(boldFont.className, "text-xl text-slate-800")}>
@@ -29,7 +27,9 @@ const Modal = ({ title, dims, onClose, children }: ModalProps) => {
           </button>
         </div>
 
-        <div className="p-6 mt-[50px]">{children}</div>
+        <div className="bg-white rounded-b-md shadow-lg border-x border-b px-6 pb-6 w-full h-full overflow-y-scroll">
+          {children}
+        </div>
       </div>
     </div>
   );

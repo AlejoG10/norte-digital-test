@@ -17,15 +17,13 @@ const DetailsFormSchema = z.object({
 });
 
 export const SaleFormSchema = z.object({
-  clientRUT: z.string().min(1, {
+  RUT: z.string().min(1, {
     message: "Client is required",
   }),
   branchOffice: z.string().min(1, {
     message: "Branch office is required",
   }),
-  currency: z.string().min(1, {
-    message: "Currency is required",
-  }),
+  currency: z.string(),
   details: z.array(DetailsFormSchema).nonempty({
     message: "At least one product is required",
   }),
@@ -42,9 +40,14 @@ export const ClientFormSchema = z.object({
   lastName: z.string().min(1, {
     message: "Last name is required",
   }),
-  telephone: z.string().min(1, {
-    message: "Telephone is required",
-  }),
+  telephone: z.coerce
+    .number({
+      required_error: "Telephone is required",
+      invalid_type_error: "Telephone must be a number",
+    })
+    .positive({
+      message: "Telephone must be positive",
+    }),
   city: z.string().min(1, {
     message: "City is required",
   }),
@@ -59,7 +62,12 @@ export const ClientFormSchema = z.object({
     .positive({
       message: "Number must be positive",
     }),
-  commune: z.string().min(1, {
-    message: "Commune is required",
-  }),
+  commune: z.coerce
+    .number({
+      required_error: "Commune is required",
+      invalid_type_error: "Commune must be a number",
+    })
+    .positive({
+      message: "Commune must be positive",
+    }),
 });

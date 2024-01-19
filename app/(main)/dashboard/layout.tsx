@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <Sidebar />
 
         {/* actual dashboard page */}
-        <div className="h-full max-h-sscreen overflow-y-scroll w-full">
+        <div className="h-full max-h-screen overflow-y-scroll w-full">
           {children}
         </div>
       </div>

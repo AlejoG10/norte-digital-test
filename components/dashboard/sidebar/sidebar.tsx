@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Home, LogOut, MapPin, Sun, User, Wallet } from "lucide-react";
+import { DollarSign, Home, LogOut, MapPin, Sun, User } from "lucide-react";
 
 import { useAuth } from "@/hooks/useAuth";
 import SidebarLink from "./sidebar-link";
@@ -20,7 +20,7 @@ const Sidebar = () => {
       active: pathname === "/dashboard/new-sale",
     },
     {
-      icon: Wallet,
+      icon: DollarSign,
       link: "/dashboard/sales",
       active: pathname === "/dashboard/sales",
     },

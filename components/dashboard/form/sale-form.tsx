@@ -4,43 +4,49 @@ import { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import toast from "react-hot-toast";
 import { Plus, X } from "lucide-react";
 
 import { useClientModal } from "@/hooks/useClientModal";
-import { cn } from "@/lib/utils";
-import { boldFont } from "@/fonts";
-import { branchOffices, clients, products } from "@/data";
+import { Sale, branchOffices, clients, products, sales } from "@/data";
 import { SaleFormSchema } from "@/schemas";
+import { cn, genId } from "@/lib/utils";
+
+import SubHeading from "@/components/dashboard/headings/sub-heading";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import FormCombobox from "./form-combobox";
-import FormInput from "./form-input";
+import FormCombobox from "@/components/dashboard/form/form-combobox";
+import FormInput from "@/components/dashboard/form/form-input";
+import FormLabelCustom from "@/components/dashboard/form/form-label-custom";
 
 const SaleForm = () => {
+  // custom hooks
   const clientModal = useClientModal();
-  const [trigger, setTrigger] = useState(false);
+
+  // state hooks
+  const [, setTrigger] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // ----------
+  // form setup
+  // ----------
+
+  const defaultDetail = { name: "", quantity: 0, price: 0, subtotal: 0 };
 
   const form = useForm<z.infer<typeof SaleFormSchema>>({
     resolver: zodResolver(SaleFormSchema),
     defaultValues: {
-      clientRUT: "",
+      RUT: "",
       branchOffice: "",
       currency: "",
-      details: [
-        {
-          name: "",
-          quantity: 0,
-          price: 0,
-          subtotal: 0,
-        },
-      ],
+      details: [defaultDetail],
       total: 0,
     },
   });
 
   const { control, setValue, handleSubmit } = form;
 
+  // dynamic field array
   const {
     fields: details,
     append,
@@ -50,40 +56,133 @@ const SaleForm = () => {
     control,
   });
 
+  // watch fields
   const branchOfficeWatch = form.watch("branchOffice");
   const currencyWatch = form.watch("currency");
   const detailsWatch = form.watch("details");
 
-  const getCurrency = () =>
-    branchOfficeWatch &&
-    branchOffices.find(
+  // ----------------
+  // helper functions
+  // ----------------
+
+  /**
+   * gets the currency of the selected branch office
+   * @returns currency or "" if not found
+   */
+  const getCurrency = () => {
+    if (!branchOfficeWatch) return "";
+
+    const currency = branchOffices.find(
       (branchOffice) => branchOffice.country === branchOfficeWatch
     )!.currency;
 
-  const getProduct = (i: number) =>
-    products.find((product) => product.id === detailsWatch[i].name);
+    return currency;
+  };
 
-  const getPrice = (i: number) => getProduct(i)?.price || 0;
+  /**
+   * appends the selected currency to a label
+   * @param label
+   * @returns complete label with currency
+   */
+  const appendCurrencyTo = (label: string) => {
+    return `${label} ${currencyWatch && `(${currencyWatch})`}`;
+  };
 
-  const getSubtotal = (i: number) => detailsWatch[i].quantity * getPrice(i);
+  /**
+   * gets all the products from the selected branch office
+   * @returns products from the selected branch office
+   */
+  const getProductsFromBranchOffice = () => {
+    return products.filter(
+      (product) => product.branchOffice === branchOfficeWatch
+    );
+  };
 
-  const getTotal = () =>
-    detailsWatch.reduce((acc, _, i) => acc + getSubtotal(i), 0);
+  /**
+   * gets the product at index i from the detail list products
+   * @param i index
+   * @returns product at index i
+   */
+  const getProduct = (i: number) => {
+    return products.find((product) => product.id === detailsWatch[i].name);
+  };
 
+  /**
+   * gets the price of the product at index i from the detail list products
+   * @param i index
+   * @returns product price at index i or 0 if product not found
+   */
+  const getPrice = (i: number) => {
+    return getProduct(i)?.price || 0;
+  };
+
+  /**
+   * gets the subtotal of the product at index i from the detail list products
+   * @param i index
+   * @returns subtotal at index i
+   */
+  const getSubtotal = (i: number) => {
+    return detailsWatch[i].quantity * getPrice(i);
+  };
+
+  /**
+   * gets the total of the sale (sumatory of subtotals)
+   * @returns subtotal at index i
+   */
+  const getTotal = () => {
+    return detailsWatch.reduce((acc, _, i) => acc + getSubtotal(i), 0);
+  };
+
+  /**
+   * useless function to re-render the form at specific times
+   */
   const onTrigger = () => {
-    console.log("triggered!");
     setTrigger((prev) => !prev);
   };
 
+  /**
+   * saves the current sale with the specified values
+   * @param values form values
+   */
   const onSubmit = (values: z.infer<typeof SaleFormSchema>) => {
-    console.log(values);
+    setLoading(true);
+
+    const { RUT, branchOffice, details, total } = values;
+
+    const newSale: Sale = {
+      id: genId(),
+      fecha: new Date(),
+      sellerRUT: genId(), // TODO: make seller modal
+      clientRUT: RUT,
+      branchOffice: branchOffice,
+      total: total,
+      details: details.map((detail) => ({
+        productId: detail.name,
+        price: detail.price,
+        quantity: detail.quantity,
+        subtotal: detail.subtotal,
+      })),
+    };
+
+    sales.splice(0, 0, newSale);
+
+    form.reset();
+
+    setLoading(false);
+    toast.success("Sale successfully saved!");
   };
 
-  const appendCurrency = (label: string) =>
-    `${label} ${currencyWatch && `(${currencyWatch})`}`;
+  // ----------
+  // useEffects
+  // ----------
 
+  /**
+   * saves the currency every time branchOffice field is changed
+   * removes details section (as product depends on branchesOffice)
+   */
   useEffect(() => {
-    form.setValue("currency", getCurrency());
+    setValue("currency", getCurrency());
+    form.resetField("details");
   }, [branchOfficeWatch]);
 
   return (
@@ -91,28 +190,28 @@ const SaleForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-y-8">
           {/* document section */}
-          <div className="flex flex-col gap-y-4">
-            <h2 className={cn(boldFont.className, "text-xl text-slate-800")}>
-              Document
-            </h2>
+          <section className="flex flex-col gap-y-4">
+            <SubHeading title="Document" />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-3 lg:gap-x-6">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-6">
               {/* client */}
-              <div className="flex gap-x-2 w-full">
+              <div className="flex col-span-5 gap-x-3">
                 <FormCombobox
                   form={form}
-                  name="clientRUT"
+                  name="RUT"
                   label="Client"
                   required
                   placeholder="Select a client"
                   innerPlaceholder="Search clients"
                   emptyText="No clients found."
-                  items={clients.sort((a, b) => a.RUT.localeCompare(b.RUT))}
+                  items={clients}
                   itemKey="RUT"
-                  itemValue="RUT"
+                  itemValue="name"
+                  itemValueConcat="lastName"
                   disabled={loading}
                 />
 
+                {/* add client button */}
                 <Button
                   size="icon"
                   type="button"
@@ -124,42 +223,42 @@ const SaleForm = () => {
               </div>
 
               {/* branch office */}
-              <FormCombobox
-                form={form}
-                name="branchOffice"
-                label="Branch Office"
-                required
-                placeholder="Select a branch office"
-                innerPlaceholder="Search a branch office"
-                emptyText="No branch offices found."
-                items={branchOffices.sort((a, b) =>
-                  a.country.localeCompare(b.country)
-                )}
-                itemKey="country"
-                itemValue="country"
-                disabled={loading}
-              />
+              <div className="col-span-4">
+                <FormCombobox
+                  form={form}
+                  name="branchOffice"
+                  label="Branch Office"
+                  required
+                  placeholder="Select a branch office"
+                  innerPlaceholder="Search a branch office"
+                  emptyText="No branch offices found."
+                  items={branchOffices}
+                  itemKey="country"
+                  itemValue="country"
+                  disabled={loading}
+                />
+              </div>
 
               {/* currency */}
-              <FormInput
-                control={control}
-                name="currency"
-                value={getCurrency()}
-                label="Currency"
-                disabled
-              />
+              <div className="col-span-3">
+                <FormInput
+                  control={control}
+                  name="currency"
+                  value={getCurrency()}
+                  label="Currency"
+                  disabled
+                />
+              </div>
             </div>
-          </div>
+          </section>
 
           {/* details section */}
           <div className="flex flex-col gap-y-4">
-            <h2 className={cn(boldFont.className, "text-xl text-slate-800")}>
-              Details
-            </h2>
+            <SubHeading title="Details" />
 
             {details.map((detail, i) => (
               <div key={detail.id} className="grid grid-cols-12 gap-x-6">
-                {/* name */}
+                {/* product name */}
                 <div className="col-span-5">
                   <FormCombobox
                     form={form}
@@ -169,11 +268,7 @@ const SaleForm = () => {
                     placeholder="Select a product"
                     innerPlaceholder="Search a product"
                     emptyText="No products found."
-                    items={products
-                      .filter(
-                        (product) => product.branchOffice === branchOfficeWatch
-                      )
-                      .sort((a, b) => a.name.localeCompare(b.name))}
+                    items={getProductsFromBranchOffice()}
                     itemKey="id"
                     itemValue="name"
                     disabled={!branchOfficeWatch || loading}
@@ -181,7 +276,7 @@ const SaleForm = () => {
                   />
                 </div>
 
-                {/* quantity */}
+                {/* product quantity */}
                 <div className="col-span-2">
                   <FormInput
                     control={control}
@@ -194,13 +289,14 @@ const SaleForm = () => {
                   />
                 </div>
 
-                {/* price */}
+                {/* product price */}
                 <div className="col-span-2">
                   <FormInput
                     control={control}
                     name={`details[${i}].price`}
-                    label={i === 0 ? "Price" : undefined}
+                    label={i === 0 ? appendCurrencyTo("Price") : undefined}
                     type="number"
+                    setValue={setValue}
                     value={getPrice(i)}
                     disabled
                   />
@@ -211,13 +307,14 @@ const SaleForm = () => {
                   <FormInput
                     control={control}
                     name={`details[${i}].subtotal`}
-                    label={i === 0 ? appendCurrency("Subtotal") : undefined}
+                    label={i === 0 ? appendCurrencyTo("Subtotal") : undefined}
+                    setValue={setValue}
                     value={getSubtotal(i)}
                     disabled
                   />
                 </div>
 
-                {/* remove */}
+                {/* remove button */}
                 <div className="col-span-1 ml-auto">
                   <Button
                     size="icon"
@@ -236,42 +333,42 @@ const SaleForm = () => {
             ))}
 
             <Button
-              type="button"
               className="bg-sky-500 hover:bg-sky-600 w-40"
-              onClick={() =>
-                append({
-                  name: "",
-                  quantity: 0,
-                  price: 0,
-                  subtotal: 0,
-                })
-              }
+              type="button"
+              onClick={() => append(defaultDetail)}
             >
               Add field
             </Button>
+          </div>
 
-            <div className="grid grid-cols-12 gap-x-6">
-              {/* total */}
-              <div className="col-start-10 col-span-2">
-                <FormInput
-                  control={control}
-                  name="total"
-                  value={getTotal()}
-                  label={appendCurrency("Total")}
-                  disabled
-                />
-              </div>
+          <br />
+
+          {/* total */}
+          <div className="grid grid-cols-12 items-center gap-x-6">
+            <div className="col-start-8 col-span-2 ml-auto">
+              <FormLabelCustom label={appendCurrencyTo("Total")} />
             </div>
 
-            <div className="grid grid-cols-12 gap-x-6">
-              <div className="col-start-10 col-span-2">
-                <Button
-                  type="submit"
-                  className="bg-sky-500 hover:bg-sky-600 w-full"
-                >
-                  Save
-                </Button>
-              </div>
+            <div className="col-start-10 col-span-2">
+              <FormInput
+                control={control}
+                name="total"
+                value={getTotal()}
+                setValue={setValue}
+                disabled
+              />
+            </div>
+          </div>
+
+          {/* save button */}
+          <div className="grid grid-cols-12 gap-x-6">
+            <div className="col-start-10 col-span-2">
+              <Button
+                type="submit"
+                className="bg-sky-500 hover:bg-sky-600 w-full"
+              >
+                Save
+              </Button>
             </div>
           </div>
         </div>

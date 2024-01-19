@@ -1,12 +1,11 @@
 import { cn } from "@/lib/utils";
 import { extraBoldFont } from "@/fonts";
 
-interface HeaderProps {
+interface HeadingProps {
   title: string;
-  imgUrl: string;
 }
 
-const Header = ({ title, imgUrl }: HeaderProps) => {
+const Heading = ({ title }: HeadingProps) => {
   return (
     <div className="flex gap-x-4 w-full">
       <div className="flex flex-col gap-y-3 w-full">
@@ -19,4 +18,4 @@ const Header = ({ title, imgUrl }: HeaderProps) => {
   );
 };
 
-export default Header;
+export default Heading;

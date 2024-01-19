@@ -31,6 +31,7 @@ interface FormComboboxProps {
   items: any[];
   itemKey: string;
   itemValue: string;
+  itemValueConcat?: string;
   disabled?: boolean;
   onTrigger?: () => void;
 }
@@ -46,12 +47,23 @@ const FormCombobox = ({
   items,
   itemKey,
   itemValue,
+  itemValueConcat,
   disabled,
   onTrigger,
 }: FormComboboxProps) => {
   const [showItems, setShowItems] = useState(false);
   const triggerRef = useRef<any>(null);
   const contentRef = useRef<any>(null);
+
+  const getFieldValue = (value: string) => {
+    if (itemValueConcat) {
+      const item = items.find((item) => item[itemKey] === value);
+      return `${item[itemValue]} ${item[itemValueConcat!]}`;
+    } else {
+      const item = items.find((item) => item[itemKey] === value);
+      return item ? item[itemValue] : "";
+    }
+  };
 
   const onWindowClick = (e: Event) => {
     const target = e.target;
@@ -92,15 +104,11 @@ const FormCombobox = ({
                     role="combobox"
                     onClick={() => setShowItems((prev) => !prev)}
                     className={cn(
-                      "w-full justify-between mb-2",
-                      !field.value && "text-muted-foreground"
+                      "w-full justify-between mb-2 text-slate-800",
+                      !field.value && "text-muted-foreground font-normal"
                     )}
                   >
-                    {field.value
-                      ? items.find((item) => item[itemKey] === field.value)[
-                          itemValue
-                        ]
-                      : placeholder}
+                    {field.value ? getFieldValue(field.value) : placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                   </Button>
                 </FormControl>
@@ -117,10 +125,15 @@ const FormCombobox = ({
                       {items.map((item) => (
                         <CommandItem
                           key={item[itemKey]}
-                          value={item[itemKey]}
+                          value={`${
+                            itemValueConcat
+                              ? `${item[itemValue]} ${item[itemValueConcat]}`
+                              : item[itemValue]
+                          }`}
                           onSelect={() => {
                             form.setValue(name, item[itemKey]);
                             onTrigger && onTrigger();
+                            setShowItems(false);
                           }}
                         >
                           <Check
@@ -131,7 +144,8 @@ const FormCombobox = ({
                                 : "opacity-0"
                             )}
                           />
-                          {item[itemValue]}
+                          {item[itemValue]}{" "}
+                          {itemValueConcat && item[itemValueConcat]}
                         </CommandItem>
                       ))}
                     </CommandGroup>
