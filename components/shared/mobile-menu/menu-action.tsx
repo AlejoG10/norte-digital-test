@@ -16,6 +16,7 @@ const MenuAction = ({
 }: MenuActionProps) => {
   return (
     <button
+      type="button"
       className="flex items-center gap-x-3 p-4 w-full hover:bg-sky-500 hover:text-white"
       onClick={() => {
         onClick();

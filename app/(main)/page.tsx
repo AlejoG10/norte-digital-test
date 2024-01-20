@@ -8,7 +8,7 @@ export default function LandingPage() {
   return (
     <main>
       <Navbar />
-      <div className="flex flex-col gap-y-20 px-12 sm:px-16">
+      <div className="flex flex-col gap-y-10 px-12 sm:px-16">
         <Banner />
         <div id="products" />
         <Products />
