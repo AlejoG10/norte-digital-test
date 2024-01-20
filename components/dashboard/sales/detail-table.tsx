@@ -23,58 +23,72 @@ const DetailTable = ({ details, currency, total }: DetailTableProps) => {
   };
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className="text-base">
-          <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
-            Product ID
-          </TableHead>
-          <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
-            Name
-          </TableHead>
-          <TableHead className={cn(semiBoldFont.className, "text-slate-800 text-right")}>
-            Quantity
-          </TableHead>
-          <TableHead
-            className={cn(
-              semiBoldFont.className,
-              "text-slate-800 text-right w-52"
-            )}
-          >
-            Unit Price ({currency})
-          </TableHead>
-          <TableHead
-            className={cn(
-              semiBoldFont.className,
-              "text-slate-800 text-right w-52"
-            )}
-          >
-            Subtotal ({currency})
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {details.map((detail, i) => (
-          <TableRow key={i}>
-            <TableCell>{detail.productId}</TableCell>
-            <TableCell>{getProductName(detail.productId)}</TableCell>
-            <TableCell className="text-right">{detail.quantity}</TableCell>
-            <TableCell className="text-right">
-              {value.format(detail.price)}
-            </TableCell>
-            <TableCell className="text-right">
-              {value.format(detail.subtotal)}
-            </TableCell>
+    <section className="bg-slate-50 border rounded-md px-5 py-2 h-fit">
+      <Table>
+        <TableHeader>
+          <TableRow className="text-base">
+            <TableHead
+              className={cn(semiBoldFont.className, "text-slate-800 w-12")}
+            >
+              #
+            </TableHead>
+            <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
+              Product ID
+            </TableHead>
+            <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
+              Name
+            </TableHead>
+            <TableHead
+              className={cn(
+                semiBoldFont.className,
+                "text-slate-800 text-right w-12"
+              )}
+            >
+              Quantity
+            </TableHead>
+            <TableHead
+              className={cn(
+                semiBoldFont.className,
+                "text-slate-800 text-right w-68"
+              )}
+            >
+              Unit Price ({currency})
+            </TableHead>
+            <TableHead
+              className={cn(
+                semiBoldFont.className,
+                "text-slate-800 text-right w-68"
+              )}
+            >
+              Subtotal ({currency})
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={4}>Total ({currency}):</TableCell>
-          <TableCell className="text-right">{value.format(total)}</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {details.map((detail, i) => (
+            <TableRow key={i}>
+              <TableCell className="font-medium">{i + 1}</TableCell>
+              <TableCell>{detail.productId}</TableCell>
+              <TableCell>{getProductName(detail.productId)}</TableCell>
+              <TableCell className="text-right">{detail.quantity}</TableCell>
+              <TableCell className="text-right">
+                {value.format(detail.price)}
+              </TableCell>
+              <TableCell className="text-right">
+                {value.format(detail.subtotal)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <br />
+        <TableFooter className="bg-slate-50">
+          <TableRow className="border-none">
+            <TableCell colSpan={5}>Total ({currency}):</TableCell>
+            <TableCell className="text-right">{value.format(total)}</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </section>
   );
 };
 

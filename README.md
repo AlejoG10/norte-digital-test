@@ -1,7 +1,7 @@
 
 # Norte Digital Frontend Test
 
-Hosting: `http://`
+Hosting: `https://norte-digital-test-alejog10.vercel.app/`
 
 ## Pasos para la ejecución local
 
@@ -26,3 +26,7 @@ Para acceder al dashboard debe acceder haciendo login con las siguientes credenc
 ## Tecnologías Principales
 
 `next.js, react.js, tailwindcss, shadcn, zustand`
+
+## Lenguajes
+
+`TypeScript, JavaScript`

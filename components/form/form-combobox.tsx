@@ -116,7 +116,7 @@ const FormCombobox = ({
               {showItems && (
                 <div
                   ref={contentRef}
-                  className="absolute bg-popover rounded-md border text-popover-foreground shadow-md outline-none w-full z-10"
+                  className="absolute bg-popover rounded-md border text-popover-foreground shadow-md outline-none w-full z-50"
                 >
                   <Command>
                     <CommandInput placeholder={innerPlaceholder} />
