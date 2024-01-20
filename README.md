@@ -21,6 +21,8 @@ En la raíz del proyecto `norte-digital-test` ejecutar el proyecto
 
     npm run dev
 
+La aplicación estará corriendo en `http://localhost:3000/`
+
 Para acceder al dashboard debe acceder haciendo login con las siguientes credenciales de prueba
 
 > username: admin
