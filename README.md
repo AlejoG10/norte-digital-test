@@ -1,4 +1,3 @@
-
 # Norte Digital Frontend Test
 
 Hosting: `https://norte-digital-test-alejog10.vercel.app/`
@@ -21,11 +20,14 @@ En la raíz del proyecto `norte-digital-test` ejecutar el proyecto
 Para acceder al dashboard debe acceder haciendo login con las siguientes credenciales de prueba
 
 > username: admin
+
 > password: admin
+
+Tenga en cuenta que cualquier cambio forzado en la URL o actualización de página hará reiniciar los datos locales y por ende, el usuario quedará desautenticado.
 
 ## Tecnologías Principales
 
-`next.js, react.js, tailwindcss, shadcn, zustand`
+`Next.js, React.js, Tailwindcss, Shadcn, Zustand`
 
 ## Lenguajes
 
