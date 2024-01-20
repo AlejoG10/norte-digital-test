@@ -1,5 +1,8 @@
 import * as z from "zod";
 
+/**
+ * sale details form schema and validations
+ */
 const DetailsFormSchema = z.object({
   name: z.string().min(1, {
     message: "Name is required",
@@ -19,6 +22,10 @@ const DetailsFormSchema = z.object({
   subtotal: z.string(),
 });
 
+/**
+ * sale form schema and validations
+ * used when creating a new sale
+ */
 export const SaleFormSchema = z.object({
   RUT: z.string().min(1, {
     message: "Client is required",
@@ -33,6 +40,10 @@ export const SaleFormSchema = z.object({
   total: z.string(),
 });
 
+/**
+ * client form schema and validations
+ * used when creating a new client
+ */
 export const ClientFormSchema = z.object({
   RUT: z.string().min(1, {
     message: "RUT is required",
@@ -84,6 +95,10 @@ export const ClientFormSchema = z.object({
     }),
 });
 
+/**
+ * login form schema and validations
+ * used to login
+ */
 export const LoginFormSchema = z.object({
   username: z.string().min(1, {
     message: "Username is required",

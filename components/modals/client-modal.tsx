@@ -11,7 +11,7 @@ import { Client, clients } from "@/data";
 import { ClientFormSchema } from "@/schemas";
 import Modal from "./modal";
 import { Form } from "@/components/ui/form";
-import FormInput from "@/components/form/form-input";
+import FormInput from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
 
 const ClientModal = () => {

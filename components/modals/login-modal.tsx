@@ -12,9 +12,9 @@ import { LoginFormSchema } from "@/schemas";
 import { admins } from "@/data";
 import Modal from "./modal";
 import { Form } from "@/components/ui/form";
-import FormInput from "@/components/form/form-input";
+import FormInput from "@/components/shared/form/form-input";
 import { Button } from "@/components/ui/button";
-import AuthError from "@/components/form/auth-error";
+import AuthError from "@/components/shared/form/auth-error";
 import { useAuth } from "@/hooks/useAuth";
 
 const LoginModal = () => {

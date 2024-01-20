@@ -1,12 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Home, User, ShoppingCart, DollarSign } from "lucide-react";
+import { Home, ShoppingCart, DollarSign } from "lucide-react";
 
-import Brand from "@/components/navbar/brand";
-import NavbarLinks from "@/components/navbar/navbar-links";
+import Brand from "@/components/landing/navbar/brand";
+import NavbarLinks from "@/components/landing/navbar/navbar-links";
 import MobileMenu from "@/components/shared/mobile-menu/mobile-menu";
-import LoginBtn from "@/components/navbar/login-btn";
+import LoginBtn from "@/components/landing/navbar/login-btn";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -17,12 +17,6 @@ const Navbar = () => {
       label: "Home",
       link: "/",
       active: pathname === "/",
-    },
-    {
-      icon: User,
-      label: "About us",
-      link: "/#about",
-      active: pathname === "/#about",
     },
     {
       icon: ShoppingCart,
@@ -39,17 +33,19 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed px-12 py-10 sm:px-16 sm:py-12 h-24 w-full z-40">
-      <div className="relative flex justify-between items-center bg-white">
+    <nav className="bg-white fixed px-12 py-4 sm:px-16 w-full z-40">
+      <div className="relative flex justify-between items-center">
         {/* brand */}
         <Brand />
 
         {/* links */}
         <NavbarLinks links={links} />
 
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-2">
           {/* login */}
-          <LoginBtn />
+          <div className="flex justify-end w-fit lg:w-[185px]">
+            <LoginBtn />
+          </div>
 
           {/* mobile menu */}
           <MobileMenu menuLinks={links} outline className="lg:hidden" />

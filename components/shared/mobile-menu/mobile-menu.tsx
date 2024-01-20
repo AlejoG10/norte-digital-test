@@ -59,12 +59,12 @@ const MobileMenu = ({
       >
         {/* links */}
         {menuLinks.map((link) => (
-          <MenuLink key={link.label} {...link} />
+          <MenuLink key={link.label} {...link} setState={setShowMenu} />
         ))}
 
         {/* actions */}
         {menuActions?.map((action) => (
-          <MenuAction key={action.label} {...action} />
+          <MenuAction key={action.label} {...action} setState={setShowMenu} />
         ))}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import Heading from "@/components/dashboard/headings/heading";
-import SaleForm from "@/components/form/sale-form";
+import SaleForm from "@/components/shared/form/sale-form";
 
 const NewSalePage = () => {
   return (

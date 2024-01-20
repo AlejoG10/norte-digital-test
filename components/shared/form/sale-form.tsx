@@ -15,9 +15,9 @@ import { cn, genId, unformatNumber, value } from "@/lib/utils";
 import SubHeading from "@/components/dashboard/headings/sub-heading";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import FormCombobox from "@/components/form/form-combobox";
-import FormInput from "@/components/form/form-input";
-import FormLabelCustom from "@/components/form/form-label-custom";
+import FormCombobox from "@/components/shared/form/form-combobox";
+import FormInput from "@/components/shared/form/form-input";
+import FormLabelCustom from "@/components/shared/form/form-label-custom";
 
 const SaleForm = () => {
   // custom hooks

@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FormLabelCustom from "@/components/form/form-label-custom";
+import FormLabelCustom from "@/components/shared/form/form-label-custom";
 import { Eye, EyeOff } from "lucide-react";
 
 interface FormFieldProps {
