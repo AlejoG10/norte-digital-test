@@ -9,6 +9,10 @@ Crear un repositorio de manera local y luego clonar este repositorio
     git init
     git clone https://github.com/AlejoG10/norte-digital-test.git
 
+Asegurese de quedar en la raíz del proyecto
+
+    cd norte-digital-test
+
 En la raíz del proyecto `norte-digital-test` instalar las dependencias y módulos del proyecto
 
     npm install
