@@ -10,14 +10,14 @@ import { Plus, X } from "lucide-react";
 import { useClientModal } from "@/hooks/useClientModal";
 import { Sale, branchOffices, clients, products, sales } from "@/data";
 import { SaleFormSchema } from "@/schemas";
-import { cn, genId } from "@/lib/utils";
+import { cn, genId, unformatNumber, value } from "@/lib/utils";
 
 import SubHeading from "@/components/dashboard/headings/sub-heading";
 import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import FormCombobox from "@/components/dashboard/form/form-combobox";
-import FormInput from "@/components/dashboard/form/form-input";
-import FormLabelCustom from "@/components/dashboard/form/form-label-custom";
+import FormCombobox from "@/components/form/form-combobox";
+import FormInput from "@/components/form/form-input";
+import FormLabelCustom from "@/components/form/form-label-custom";
 
 const SaleForm = () => {
   // custom hooks
@@ -31,7 +31,7 @@ const SaleForm = () => {
   // form setup
   // ----------
 
-  const defaultDetail = { name: "", quantity: 0, price: 0, subtotal: 0 };
+  const defaultDetail = { name: "", quantity: 0, price: "", subtotal: "" };
 
   const form = useForm<z.infer<typeof SaleFormSchema>>({
     resolver: zodResolver(SaleFormSchema),
@@ -40,7 +40,7 @@ const SaleForm = () => {
       branchOffice: "",
       currency: "",
       details: [defaultDetail],
-      total: 0,
+      total: "",
     },
   });
 
@@ -127,7 +127,7 @@ const SaleForm = () => {
 
   /**
    * gets the total of the sale (sumatory of subtotals)
-   * @returns subtotal at index i
+   * @returns sale total
    */
   const getTotal = () => {
     return detailsWatch.reduce((acc, _, i) => acc + getSubtotal(i), 0);
@@ -151,25 +151,26 @@ const SaleForm = () => {
 
     const newSale: Sale = {
       id: genId(),
-      fecha: new Date(),
+      date: new Date(),
       sellerRUT: genId(), // TODO: make seller modal
       clientRUT: RUT,
       branchOffice: branchOffice,
-      total: total,
+      total: unformatNumber(total),
       details: details.map((detail) => ({
         productId: detail.name,
-        price: detail.price,
+        price: unformatNumber(detail.price),
         quantity: detail.quantity,
-        subtotal: detail.subtotal,
+        subtotal: unformatNumber(detail.subtotal),
       })),
     };
 
+    console.log("New sale", newSale);
     sales.splice(0, 0, newSale);
 
     form.reset();
 
-    setLoading(false);
     toast.success("Sale successfully saved!");
+    setLoading(false);
   };
 
   // ----------
@@ -187,10 +188,10 @@ const SaleForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="h-full">
+        <div className="flex flex-col gap-y-8 h-full">
           {/* document section */}
-          <section className="bg-slate-50 flex flex-col gap-y-5 border rounded-md p-4">
+          <section className="bg-slate-50 flex flex-col gap-y-5 border rounded-md p-5 h-fit">
             <SubHeading title="Document" />
 
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-y-3 sm:gap-x-6">
@@ -253,8 +254,8 @@ const SaleForm = () => {
           </section>
 
           {/* details section wrapper */}
-          <section className="bg-slate-50 border rounded-md p-4 overflow-x-scroll">
-            <div className="min-w-[900px]">
+          <section className="bg-slate-50 border rounded-md h-full overflow-x-scroll">
+            <div className="flex flex-col justify-between p-5 h-full min-w-[900px]">
               {/* details section */}
               <div className="flex flex-col gap-y-5">
                 <SubHeading title="Details" />
@@ -297,10 +298,11 @@ const SaleForm = () => {
                       <FormInput
                         control={control}
                         name={`details[${i}].price`}
-                        label={i === 0 ? appendCurrencyTo("Price") : undefined}
-                        type="number"
+                        label={
+                          i === 0 ? appendCurrencyTo("Unit Price") : undefined
+                        }
                         setValue={setValue}
-                        value={getPrice(i)}
+                        value={value.format(getPrice(i))}
                         disabled
                       />
                     </div>
@@ -314,7 +316,7 @@ const SaleForm = () => {
                           i === 0 ? appendCurrencyTo("Subtotal") : undefined
                         }
                         setValue={setValue}
-                        value={getSubtotal(i)}
+                        value={value.format(getSubtotal(i))}
                         disabled
                       />
                     </div>
@@ -348,32 +350,34 @@ const SaleForm = () => {
 
               <br />
 
-              {/* total */}
-              <div className="grid grid-cols-12 items-center gap-x-6">
-                <div className="col-start-8 col-span-2 ml-auto">
-                  <FormLabelCustom label={appendCurrencyTo("Total")} />
+              <div>
+                {/* total */}
+                <div className="grid grid-cols-12 items-center gap-x-6">
+                  <div className="col-start-8 col-span-2 ml-auto">
+                    <FormLabelCustom label={appendCurrencyTo("Total")} />
+                  </div>
+
+                  <div className="col-start-10 col-span-2">
+                    <FormInput
+                      control={control}
+                      name="total"
+                      value={value.format(getTotal())}
+                      setValue={setValue}
+                      disabled
+                    />
+                  </div>
                 </div>
 
-                <div className="col-start-10 col-span-2">
-                  <FormInput
-                    control={control}
-                    name="total"
-                    value={getTotal()}
-                    setValue={setValue}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              {/* save button */}
-              <div className="grid grid-cols-12 gap-x-6 mt-6">
-                <div className="col-start-10 col-span-2">
-                  <Button
-                    type="submit"
-                    className="bg-sky-500 hover:bg-sky-600 w-full"
-                  >
-                    Save
-                  </Button>
+                {/* save button */}
+                <div className="grid grid-cols-12 gap-x-6 mt-6">
+                  <div className="col-start-10 col-span-2">
+                    <Button
+                      type="submit"
+                      className="bg-sky-500 hover:bg-sky-600 w-full"
+                    >
+                      Save
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

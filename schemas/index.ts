@@ -11,9 +11,12 @@ const DetailsFormSchema = z.object({
     })
     .positive({
       message: "Quantity must be positive",
+    })
+    .int({
+      message: "Quantity must be an integer",
     }),
-  price: z.coerce.number(),
-  subtotal: z.coerce.number(),
+  price: z.string(),
+  subtotal: z.string(),
 });
 
 export const SaleFormSchema = z.object({
@@ -27,7 +30,7 @@ export const SaleFormSchema = z.object({
   details: z.array(DetailsFormSchema).nonempty({
     message: "At least one product is required",
   }),
-  total: z.coerce.number(),
+  total: z.string(),
 });
 
 export const ClientFormSchema = z.object({
@@ -47,6 +50,9 @@ export const ClientFormSchema = z.object({
     })
     .positive({
       message: "Telephone must be positive",
+    })
+    .int({
+      message: "Telephone must be an integer",
     }),
   city: z.string().min(1, {
     message: "City is required",
@@ -61,6 +67,9 @@ export const ClientFormSchema = z.object({
     })
     .positive({
       message: "Number must be positive",
+    })
+    .int({
+      message: "Number must be an integer",
     }),
   commune: z.coerce
     .number({
@@ -69,5 +78,17 @@ export const ClientFormSchema = z.object({
     })
     .positive({
       message: "Commune must be positive",
+    })
+    .int({
+      message: "Commune must be an integer",
     }),
+});
+
+export const LoginFormSchema = z.object({
+  username: z.string().min(1, {
+    message: "Username is required",
+  }),
+  password: z.string().min(1, {
+    message: "Password is required",
+  }),
 });

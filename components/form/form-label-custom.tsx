@@ -15,7 +15,7 @@ const FormLabelCustom = ({ label, required, className }: FormLabelCustom) => {
     <FormLabel
       className={cn(
         semiBoldFont.className,
-        "flex text-base text-slate-800 w-fit",
+        "flex text-sm text-slate-800 w-fit",
         className
       )}
     >

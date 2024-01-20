@@ -3,11 +3,11 @@
 import { useRouter } from "next/navigation";
 
 import { branchOffices, clients, sales } from "@/data";
-import { valor } from "@/lib/utils";
+import { cn, value } from "@/lib/utils";
+import { semiBoldFont } from "@/fonts";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -29,16 +29,34 @@ const SalesTable = () => {
 
   return (
     <Table>
-      <TableCaption>Recent sales.</TableCaption>
       <TableHeader>
-        <TableRow>
-          <TableHead className="w-12">#</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead>Client</TableHead>
-          <TableHead>Branch Office</TableHead>
-          <TableHead>Currency</TableHead>
-          <TableHead className="text-right">Total</TableHead>
-          <TableHead className="w-20"></TableHead>
+        <TableRow className="text-base">
+          <TableHead
+            className={cn(semiBoldFont.className, "text-slate-800 w-12")}
+          >
+            #
+          </TableHead>
+          <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
+            Date
+          </TableHead>
+          <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
+            Client
+          </TableHead>
+          <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
+            Branch Office
+          </TableHead>
+          <TableHead className={cn(semiBoldFont.className, "text-slate-800")}>
+            Currency
+          </TableHead>
+          <TableHead
+            className={cn(
+              semiBoldFont.className,
+              "text-slate-800 text-right w-12"
+            )}
+          >
+            Total
+          </TableHead>
+          <TableHead className="w-40"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -50,12 +68,12 @@ const SalesTable = () => {
             <TableCell>{sale.branchOffice}</TableCell>
             <TableCell>{getCurrency(sale.branchOffice)}</TableCell>
             <TableCell className="text-right">
-              {valor.format(sale.total)}
+              {value.format(sale.total)}
             </TableCell>
-            <TableCell>
+            <TableCell className="flex justify-end">
               <Button
                 size="sm"
-                className="bg-sky-500 hover:bg-sky-600 w-full"
+                className="bg-sky-500 hover:bg-sky-600 w-16"
                 onClick={() => router.push(`/dashboard/sales/${sale.id}`)}
               >
                 <p className="text-xs">Detail</p>

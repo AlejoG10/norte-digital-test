@@ -1,3 +1,5 @@
+"use client";
+
 import { genId } from "@/lib/utils";
 
 // -----
@@ -5,7 +7,7 @@ import { genId } from "@/lib/utils";
 // -----
 
 export type Admin = {
-  user: string;
+  username: string;
   password: string;
 };
 
@@ -60,7 +62,7 @@ export type Sale = {
 
 export const admins: Admin[] = [
   {
-    user: "admin",
+    username: "admin",
     password: "admin",
   },
 ];
@@ -20148,6 +20150,10 @@ const p3 = products.find((p) => p.branchOffice === branchOffices[3].country)!;
 const b4 = branchOffices[4].country;
 const p4 = products.find((p) => p.branchOffice === branchOffices[4].country)!;
 
+const b5 = branchOffices[5].country;
+const b6 = branchOffices[6].country;
+const b7 = branchOffices[7].country;
+
 export const sales: Sale[] = [
   {
     id: genId(),
@@ -20226,6 +20232,74 @@ export const sales: Sale[] = [
         price: p4.price,
         quantity: 1,
         subtotal: p4.price,
+      },
+    ],
+  },
+  {
+    id: genId(),
+    date: new Date(),
+    sellerRUT: genId(),
+    clientRUT: clients[6].RUT,
+    branchOffice: b6,
+    total: 2 * p0.price + 3 * p1.price + p2.price + 4 * p3.price + 2 * p4.price,
+    details: [
+      {
+        productId: p0.id,
+        price: p0.price,
+        quantity: 2,
+        subtotal: p0.price,
+      },
+      {
+        productId: p1.id,
+        price: p1.price,
+        quantity: 3,
+        subtotal: p1.price,
+      },
+      {
+        productId: p2.id,
+        price: p2.price,
+        quantity: 1,
+        subtotal: p2.price,
+      },
+      {
+        productId: p3.id,
+        price: p3.price,
+        quantity: 4,
+        subtotal: p3.price,
+      },
+      {
+        productId: p4.id,
+        price: p4.price,
+        quantity: 2,
+        subtotal: p4.price,
+      },
+    ],
+  },
+  {
+    id: genId(),
+    date: new Date(),
+    sellerRUT: genId(),
+    clientRUT: clients[8].RUT,
+    branchOffice: b4,
+    total: p0.price + p1.price + 2 * p3.price,
+    details: [
+      {
+        productId: p0.id,
+        price: p0.price,
+        quantity: 1,
+        subtotal: p0.price,
+      },
+      {
+        productId: p1.id,
+        price: p1.price,
+        quantity: 1,
+        subtotal: p1.price,
+      },
+      {
+        productId: p3.id,
+        price: p3.price,
+        quantity: 2,
+        subtotal: p3.price,
       },
     ],
   },

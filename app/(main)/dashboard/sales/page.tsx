@@ -4,7 +4,7 @@ import SalesTable from "@/components/dashboard/sales/sales-table";
 const SalesPage = () => {
   return (
     <div className="flex flex-col gap-y-5">
-      <Heading title="Sales" />
+      <Heading title="Recent Sales" />
       <SalesTable />
     </div>
   );

@@ -7,7 +7,7 @@ interface SubHeadingProps {
 
 const SubHeading = ({ title }: SubHeadingProps) => {
   return (
-    <h2 className={cn(boldFont.className, "text-xl text-slate-800")}>
+    <h2 className={cn(boldFont.className, "text-lg text-slate-800")}>
       {title}
     </h2>
   );

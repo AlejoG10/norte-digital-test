@@ -12,7 +12,7 @@ const Heading = ({ title }: HeadingProps) => {
       <div className="flex flex-col gap-y-3 w-full">
         <div className="relative flex justify-between items-center w-full">
           <h1
-            className={cn(extraBoldFont.className, "text-3xl text-slate-800")}
+            className={cn(extraBoldFont.className, "text-2xl text-slate-800")}
           >
             {title}
           </h1>

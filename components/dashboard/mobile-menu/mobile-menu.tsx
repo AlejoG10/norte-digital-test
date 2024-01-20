@@ -1,12 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import toast from "react-hot-toast";
-import { DollarSign, Home, LogOut, MapPin, Menu, User } from "lucide-react";
+import {
+  DollarSign,
+  Home,
+  LogOut,
+  MapPin,
+  Menu,
+  ShoppingCart,
+  User,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import MenuLink from "./menu-link";
 import MenuAction from "./menu-action";
 
@@ -32,16 +41,22 @@ const MobileMenu = () => {
       active: pathname === "/dashboard/sales",
     },
     {
+      icon: ShoppingCart,
+      label: "Products (NOT IMPLEMENTED)",
+      link: "",
+      active: false,
+    },
+    {
       icon: User,
-      label: "Users",
-      link: "/dashboard/users",
-      active: pathname === "/dashboard/users",
+      label: "Users (NOT IMPLEMENTED)",
+      link: "",
+      active: false,
     },
     {
       icon: MapPin,
-      label: "Branch offices",
-      link: "/dashboard/branch-offices",
-      active: pathname === "/dashboard/branch-offices",
+      label: "Branch offices (NOT IMPLEMENTED)",
+      link: "",
+      active: false,
     },
   ];
 
@@ -57,23 +72,6 @@ const MobileMenu = () => {
     },
   ];
 
-  const onWindowClick = (e: Event) => {
-    const target = e.target;
-
-    const menuCurr = menuRef.current;
-
-    if (menuCurr && !menuCurr.contains(target)) {
-      e.preventDefault();
-      e.stopPropagation();
-      setShowMenu(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("click", onWindowClick);
-    return () => window.removeEventListener("click", onWindowClick);
-  }, []);
-
   return (
     <div className="md:hidden" ref={menuRef}>
       {/* trigger */}
@@ -87,19 +85,24 @@ const MobileMenu = () => {
       </Button>
 
       {/* menu */}
-      {showMenu && (
-        <div className="bg-white absolute left-0 top-[75px] flex flex-col gap-y-1 rounded-md border shadow-md py-4 w-full h-fit z-50">
-          {/* links */}
-          {menuLinks.map((link) => (
-            <MenuLink key={link.label} {...link} />
-          ))}
+      <div
+        className={cn(
+          "bg-white absolute left-0 top-[73px] flex flex-col gap-y-1 rounded-md border shadow-md py-4 w-full h-fit z-50",
+          showMenu
+            ? "animate-menu-down"
+            : "transition -translate-y-[550px] duration-500"
+        )}
+      >
+        {/* links */}
+        {menuLinks.map((link) => (
+          <MenuLink key={link.label} {...link} />
+        ))}
 
-          {/* actions */}
-          {menuActions.map((action) => (
-            <MenuAction key={action.label} {...action} />
-          ))}
-        </div>
-      )}
+        {/* actions */}
+        {menuActions.map((action) => (
+          <MenuAction key={action.label} {...action} />
+        ))}
+      </div>
     </div>
   );
 };

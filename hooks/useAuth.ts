@@ -14,7 +14,7 @@ type Actions = {
 
 export const useAuth = create<Auth & Actions>((set) => ({
   user: null,
-  isLoggedIn: true,
+  isLoggedIn: false,
   onLogin: () => set({ isLoggedIn: true }),
   onLogout: () => set({ isLoggedIn: false }),
 }));

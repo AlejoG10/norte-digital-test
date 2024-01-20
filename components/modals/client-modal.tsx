@@ -11,7 +11,7 @@ import { Client, clients } from "@/data";
 import { ClientFormSchema } from "@/schemas";
 import Modal from "./modal";
 import { Form } from "@/components/ui/form";
-import FormInput from "@/components/dashboard/form/form-input";
+import FormInput from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
 
 const ClientModal = () => {
@@ -33,6 +33,11 @@ const ClientModal = () => {
   });
 
   const { control, handleSubmit } = form;
+
+  const onClose = () => {
+    clientModal.onClose();
+    form.reset();
+  };
 
   const onSubmit = (values: z.infer<typeof ClientFormSchema>) => {
     setLoading(true);
@@ -62,10 +67,12 @@ const ClientModal = () => {
     toast.success("Client successfully created!");
   };
 
-  if (!clientModal.isOpen) return null;
-
   return (
-    <Modal title="Add a New Client" onClose={clientModal.onClose}>
+    <Modal
+      isOpen={clientModal.isOpen}
+      title="Add a New Client"
+      onClose={onClose}
+    >
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-y-4 mb-6">
@@ -74,7 +81,6 @@ const ClientModal = () => {
               control={control}
               name="RUT"
               label="RUT"
-              smallLabel
               required
               disabled={loading}
             />
@@ -84,7 +90,6 @@ const ClientModal = () => {
               control={control}
               name="name"
               label="Name"
-              smallLabel
               required
               disabled={loading}
             />
@@ -94,7 +99,6 @@ const ClientModal = () => {
               control={control}
               name="lastName"
               label="Last Name"
-              smallLabel
               required
               disabled={loading}
             />
@@ -104,7 +108,6 @@ const ClientModal = () => {
               control={control}
               name="telephone"
               label="Telephone"
-              smallLabel
               type="number"
               required
               disabled={loading}
@@ -115,7 +118,6 @@ const ClientModal = () => {
               control={control}
               name="city"
               label="City"
-              smallLabel
               required
               disabled={loading}
             />
@@ -125,7 +127,6 @@ const ClientModal = () => {
               control={control}
               name="street"
               label="Street"
-              smallLabel
               required
               disabled={loading}
             />
@@ -135,7 +136,6 @@ const ClientModal = () => {
               control={control}
               name="number"
               label="Number"
-              smallLabel
               type="number"
               required
               disabled={loading}
@@ -146,7 +146,6 @@ const ClientModal = () => {
               control={control}
               name="commune"
               label="Commune"
-              smallLabel
               type="number"
               required
               disabled={loading}

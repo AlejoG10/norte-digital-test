@@ -1,12 +1,13 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 import { useAuth } from "@/hooks/useAuth";
 import Sidebar from "@/components/dashboard/sidebar/sidebar";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const { isLoggedIn } = useAuth();
+  const pathname = usePathname();
 
   // simulates authentication
   if (!isLoggedIn) redirect("/");
